@@ -1,9 +1,13 @@
-# NRA - OpenCart Bulgaria - https://opencartbulgaria.com/
+# NRA - [OpenCartBulgaria](https://www.opencartbulgaria.com/)
 
 ## Overview
 
 [![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%207.2-8892BF.svg?style=flat-square)](https://php.net/)
-[![GitHub release](https://img.shields.io/github/v/release/opencart/opencart)](https://github.com/opencart/opencart)
+
+
+## Releases
+
+[![GitHub release](https://img.shields.io/github/v/release/opencartbulgaria/nra-opencart)](https://github.com/opencartbulgaria/nra-opencart)
 
 
 ## How to install
@@ -23,11 +27,6 @@ Read the instructions below before you create a bug report.
  2. READ the [changelog for the master branch](https://github.com/opencartbulgaria/nra-opencart/blob/master/CHANGELOG.md)
  3. Use [Google](https://www.google.com) to search for your issue.
  4. Make sure that your bug/issue is not related to your hosting environment.
-
-## Releases
-
-[![GitHub release](https://img.shields.io/github/v/release/opencartbulgaria/nra-opencart)](https://github.com/opencartbulgaria/nra-opencart)
-
 
 ## License
 
