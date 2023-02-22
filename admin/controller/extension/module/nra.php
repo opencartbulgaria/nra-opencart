@@ -132,7 +132,7 @@ class ControllerExtensionModuleNra extends Controller {
             $this->error['module_nra_eik'] = $this->language->get('error_module_nra_eik');
         }
 
-        if ((utf8_strlen($this->request->post['module_nra_shop_id']) < 3) || (utf8_strlen($this->request->post['module_nra_shop_id']) > 13)) {
+        if ((utf8_strlen($this->request->post['module_nra_shop_id']) < 3) || (utf8_strlen($this->request->post['module_nra_shop_id']) > 10)) {
             $this->error['module_nra_shop_id'] = $this->language->get('error_module_nra_shop_id');
         }
 
