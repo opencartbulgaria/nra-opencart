@@ -8,16 +8,16 @@
       <h1>{{ heading_title }}</h1>
       <ul class="breadcrumb">
         {% for breadcrumb in breadcrumbs %}
-        <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+          <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
         {% endfor %}
       </ul>
     </div>
   </div>
   <div class="container-fluid">
     {% if error_warning %}
-    <div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
-      <button type="button" class="close" data-dismiss="alert">&times;</button>
-    </div>
+      <div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+      </div>
     {% endif %}
     <div class="panel panel-default">
       <div class="panel-heading">
@@ -25,16 +25,109 @@
       </div>
       <div class="panel-body">
         <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-module" class="form-horizontal">
+
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-eik">{{ entry_eik }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="module_nra_eik" value="{{ module_nra_eik }}" placeholder="{{ entry_eik }}" id="input-eik" class="form-control" />
+              {% if error_nra_eik %}
+                <div class="text-danger">{{ error_nra_eik }}</div>
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-shop_id">{{ entry_shop_id }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="module_nra_shop_id" value="{{ module_nra_shop_id }}" placeholder="{{ entry_shop_id }}" id="input-shop_id" class="form-control" />
+              {% if error_nra_shop_id %}
+                <div class="text-danger">{{ error_nra_shop_id }}</div>
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-2 control-label"><span data-toggle="tooltip" title="{{ help_marketplace }}">{{ entry_marketplace }}</span></label>
+            <div class="col-sm-10">
+              <label class="radio-inline">
+                {% if module_nra_is_marketplace %}
+                  <input type="radio" name="module_nra_is_marketplace" value="1" checked="checked" />
+                  {{ text_yes }}
+                {% else %}
+                  <input type="radio" name="module_nra_is_marketplace" value="1" />
+                  {{ text_yes }}
+                {% endif %}
+              </label>
+              <label class="radio-inline">
+                {% if not module_nra_is_marketplace %}
+                  <input type="radio" name="module_nra_is_marketplace" value="0" checked="checked" />
+                  {{ text_no }}
+                {% else %}
+                  <input type="radio" name="module_nra_is_marketplace" value="0" />
+                  {{ text_no }}
+                {% endif %}
+              </label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-2 control-label"><span data-toggle="tooltip" title="{{ help_without_post_payment }}">{{ entry_without_post_payment }}</span></label>
+            <div class="col-sm-10">
+              <label class="checkbox-inline">
+                {% for method in payment_methods %}
+                  <p>
+                    <input type="checkbox" name="module_nra_without_post_payment[]" value="{{ method.code }}"
+                            {% if(method.code in module_nra_without_post_payment) %} checked="checked" {% endif %}
+                    />
+                    {{ method.name }}
+                  </p>
+                {% endfor %}
+              </label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-2 control-label"><span data-toggle="tooltip" title="{{ help_with_post_payment }}">{{ entry_with_post_payment }}</span></label>
+            <div class="col-sm-10">
+              <label class="checkbox-inline">
+                {% for method in payment_methods %}
+                  <p>
+                    <input type="checkbox" name="module_nra_with_post_payment[]" value="{{ method.code }}"
+                            {% if(method.code in module_nra_with_post_payment) %} checked="checked" {% endif %}
+                    />
+                    {{ method.name }}
+                  </p>
+                {% endfor %}
+              </label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-2 control-label"><span data-toggle="tooltip" title="{{ help_with_post_payment_service }}">{{ entry_with_post_payment_service }}</span></label>
+            <div class="col-sm-10">
+              <label class="checkbox-inline">
+                {% for method in payment_methods %}
+                  <p>
+                    <input type="checkbox" name="module_nra_with_post_payment[]" value="{{ method.code }}"
+                            {% if(method.code in module_nra_with_post_payment) %} checked="checked" {% endif %}
+                    />
+                    {{ method.name }}
+                  </p>
+                {% endfor %}
+              </label>
+            </div>
+          </div>
+
           <div class="form-group">
             <label class="col-sm-2 control-label" for="input-status">{{ entry_status }}</label>
             <div class="col-sm-10">
               <select name="module_nra_status" id="input-status" class="form-control">
                 {% if module_nra_status %}
-                <option value="1" selected="selected">{{ text_enabled }}</option>
-                <option value="0">{{ text_disabled }}</option>
+                  <option value="1" selected="selected">{{ text_enabled }}</option>
+                  <option value="0">{{ text_disabled }}</option>
                 {% else %}
-                <option value="1">{{ text_enabled }}</option>
-                <option value="0" selected="selected">{{ text_disabled }}</option>
+                  <option value="1">{{ text_enabled }}</option>
+                  <option value="0" selected="selected">{{ text_disabled }}</option>
                 {% endif %}
               </select>
             </div>
