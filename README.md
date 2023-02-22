@@ -30,7 +30,7 @@ Read the instructions below before you create a bug report.
 
 ## License
 
-[GNU General Public License version 3 (GPLv3)](https://github.com/opencart/opencart/blob/master/license.txt)
+[GNU General Public License version 3 (GPLv3)](https://github.com/opencartbulgaria/nra-opencart/blob/main/LICENSE)
 
 ## Links
 
