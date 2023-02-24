@@ -108,8 +108,8 @@
               <label class="checkbox-inline">
                 {% for method in payment_methods %}
                   <p>
-                    <input type="checkbox" name="module_nra_with_post_payment[]" value="{{ method.code }}"
-                            {% if(method.code in module_nra_with_post_payment) %} checked="checked" {% endif %}
+                    <input type="checkbox" name="module_nra_with_post_payment_service[]" value="{{ method.code }}"
+                            {% if(method.code in module_nra_with_post_payment_service) %} checked="checked" {% endif %}
                     />
                     {{ method.name }}
                   </p>
@@ -132,6 +132,21 @@
               </select>
             </div>
           </div>
+
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-vpos"><span data-toggle="tooltip" title="{{ help_default }}">{{ entry_vpos }}</span></label>
+            <div class="col-sm-10">
+              <input type="text" name="module_nra_vpos" value="{{ module_nra_vpos }}" placeholder="{{ entry_vpos }}" id="input-vpos" class="form-control" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-delivery_payment"><span data-toggle="tooltip" title="{{ help_default }}">{{ entry_delivery_payment }}</span></label>
+            <div class="col-sm-10">
+              <input type="text" name="module_nra_delivery_payment" value="{{ module_nra_delivery_payment }}" placeholder="{{ entry_delivery_payment }}" id="input-delivery_payment" class="form-control" />
+            </div>
+          </div>
+
         </form>
       </div>
     </div>

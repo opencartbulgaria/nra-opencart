@@ -12,6 +12,7 @@ $_['help_marketplace'] = 'Изберете дали е маркетплейс и
 $_['help_without_post_payment'] = 'Моля да изберете следните опции';
 $_['help_with_post_payment'] = 'Моля да изберете следните опции';
 $_['help_with_post_payment_service'] = 'Моля да изберете следните опции';
+$_['help_default'] = 'Ще бъде използвано по подразбиране';
 
 // Entry
 $_['entry_eik'] = 'Булстат/ЕИК на задълженото лице';
@@ -20,6 +21,8 @@ $_['entry_marketplace'] = 'Тип - Маркетплейс';
 $_['entry_without_post_payment'] = 'Освободени плащания по чл. 3 плащане без ППП';
 $_['entry_with_post_payment'] = 'Наложен платеж с ППП';
 $_['entry_with_post_payment_service'] = 'Доставчик на платежни услуги';
+$_['entry_vpos'] = 'Номер на виртуален ПОС терминал';
+$_['entry_delivery_payment'] = 'Идентификатор на доставчика на плащане';
 $_['entry_status']     = 'Статус';
 
 // Error

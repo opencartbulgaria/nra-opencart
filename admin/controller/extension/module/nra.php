@@ -36,6 +36,8 @@ class ControllerExtensionModuleNra extends Controller {
             $data['error_nra_shop_id'] = '';
         }
 
+        $data['text_edit'] = $this->language->get('text_edit');
+
         $data['breadcrumbs'] = array();
 
         $data['breadcrumbs'][] = array(
@@ -91,6 +93,24 @@ class ControllerExtensionModuleNra extends Controller {
             $data['module_nra_with_post_payment'] = $this->request->post['module_nra_with_post_payment'];
         } else {
             $data['module_nra_with_post_payment'] = $this->config->get('module_nra_with_post_payment');
+        }
+
+        if (isset($this->request->post['module_nra_with_post_payment_service'])) {
+            $data['module_nra_with_post_payment_service'] = $this->request->post['module_nra_with_post_payment_service'];
+        } else {
+            $data['module_nra_with_post_payment_service'] = $this->config->get('module_nra_with_post_payment_service');
+        }
+
+        if (isset($this->request->post['module_nra_vpos'])) {
+            $data['module_nra_vpos'] = $this->request->post['module_nra_vpos'];
+        } else {
+            $data['module_nra_vpos'] = $this->config->get('module_nra_vpos');
+        }
+
+        if (isset($this->request->post['module_nra_delivery_payment'])) {
+            $data['module_nra_delivery_payment'] = $this->request->post['module_nra_delivery_payment'];
+        } else {
+            $data['module_nra_delivery_payment'] = $this->config->get('module_nra_delivery_payment');
         }
 
         // Payment Methods
