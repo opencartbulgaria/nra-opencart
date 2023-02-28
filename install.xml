@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+    <name>NRA OpenCart Bulgaria</name>
+    <code>OpenCartBG0021</code>
+    <version>0.0.1</version>
+    <author>OpenCartBulgaria</author>
+    <link>https://opencartbulgaria.com/</link>
+
+    <!-- ADMINISTRATION OCMOD -->
+    <file path="admin/controller/common/column_left.php">
+        <operation>
+            <search><![CDATA[// Customer]]></search>
+            <add position="before"><![CDATA[
+            if ($this->config->get('module_nra_status')) {
+                $this->load->language('extension/module/nra');
+
+                   $data['menus'][] = array(
+                        'id'       => 'menu-nra',
+                        'icon'	   => 'fa-file-code-o',
+                        'name'	   => $this->language->get('text_nra'),
+                        'href'     => $this->url->link('extension/module/nra/export', 'user_token=' . $this->session->data['user_token'], true),
+                        'children' => false
+                    );
+
+            }
+            ]]></add>
+        </operation>
+    </file>
+
+</modification>

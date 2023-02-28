@@ -1,6 +1,7 @@
 <?php
 // Heading
 $_['heading_title']    = 'Генериране на XML към НАП ';
+$_['text_nra'] = 'Генериране на XML към НАП ';
 
 // Text
 $_['text_extension']   = 'Допълнения';
