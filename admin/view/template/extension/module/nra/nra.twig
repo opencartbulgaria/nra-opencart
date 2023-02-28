@@ -3,8 +3,12 @@
   <div class="page-header">
     <div class="container-fluid">
       <div class="pull-right">
+        <a href="{{ export }}" data-toggle="tooltip" title="{{ button_export }}" class="btn btn-danger" style="margin-right: 5px">
+          <i class="fa fa-file-o"></i>
+        </a>
         <button type="submit" form="form-module" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
-        <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
+        <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a>
+      </div>
       <h1>{{ heading_title }}</h1>
       <ul class="breadcrumb">
         {% for breadcrumb in breadcrumbs %}
@@ -70,14 +74,15 @@
             </div>
           </div>
 
+          {% for key, payment in payments %}
           <div class="form-group">
-            <label class="col-sm-2 control-label"><span data-toggle="tooltip" title="{{ help_without_post_payment }}">{{ entry_without_post_payment }}</span></label>
+            <label class="col-sm-2 control-label"><span data-toggle="tooltip" title="{{ help_without_post_payment }}">{{ payment }}</span></label>
             <div class="col-sm-10">
               <label class="checkbox-inline">
                 {% for method in payment_methods %}
                   <p>
-                    <input type="checkbox" name="module_nra_without_post_payment[]" value="{{ method.code }}"
-                            {% if(method.code in module_nra_without_post_payment) %} checked="checked" {% endif %}
+                    <input type="checkbox" name="module_nra_payment_method[{{ key}}][]" value="{{ method.code }}"
+                            {% if(method.code in module_nra_payment_method[key]) %} checked="checked" {% endif %}
                     />
                     {{ method.name }}
                   </p>
@@ -85,38 +90,7 @@
               </label>
             </div>
           </div>
-
-          <div class="form-group">
-            <label class="col-sm-2 control-label"><span data-toggle="tooltip" title="{{ help_with_post_payment }}">{{ entry_with_post_payment }}</span></label>
-            <div class="col-sm-10">
-              <label class="checkbox-inline">
-                {% for method in payment_methods %}
-                  <p>
-                    <input type="checkbox" name="module_nra_with_post_payment[]" value="{{ method.code }}"
-                            {% if(method.code in module_nra_with_post_payment) %} checked="checked" {% endif %}
-                    />
-                    {{ method.name }}
-                  </p>
-                {% endfor %}
-              </label>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label class="col-sm-2 control-label"><span data-toggle="tooltip" title="{{ help_with_post_payment_service }}">{{ entry_with_post_payment_service }}</span></label>
-            <div class="col-sm-10">
-              <label class="checkbox-inline">
-                {% for method in payment_methods %}
-                  <p>
-                    <input type="checkbox" name="module_nra_with_post_payment_service[]" value="{{ method.code }}"
-                            {% if(method.code in module_nra_with_post_payment_service) %} checked="checked" {% endif %}
-                    />
-                    {{ method.name }}
-                  </p>
-                {% endfor %}
-              </label>
-            </div>
-          </div>
+          {% endfor %}
 
           <div class="form-group">
             <label class="col-sm-2 control-label" for="input-status">{{ entry_status }}</label>
@@ -146,6 +120,68 @@
               <input type="text" name="module_nra_delivery_payment" value="{{ module_nra_delivery_payment }}" placeholder="{{ entry_delivery_payment }}" id="input-delivery_payment" class="form-control" />
             </div>
           </div>
+
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-status-completed">{{ entry_status_completed }}</label>
+            <div class="col-sm-10">
+              <select name="module_nra_status_completed" id="input-status-completed" class="form-control">
+                {% for order_status in order_statuses %}
+                  {% if order_status.order_status_id == module_nra_status_completed %}
+                    <option value="{{ order_status.order_status_id }}" selected="selected">{{ order_status.name }}</option>
+                  {% else %}
+                    <option value="{{ order_status.order_status_id }}">{{ order_status.name }}</option>
+                  {% endif %}
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-status-refund">{{ entry_status_refund }}</label>
+            <div class="col-sm-10">
+              <select name="module_nra_status_refund" id="input-status-refund" class="form-control">
+                {% for order_status in order_statuses %}
+                  {% if order_status.order_status_id == module_nra_status_refund %}
+                    <option value="{{ order_status.order_status_id }}" selected="selected">{{ order_status.name }}</option>
+                  {% else %}
+                    <option value="{{ order_status.order_status_id }}">{{ order_status.name }}</option>
+                  {% endif %}
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-status-refund-default">{{ entry_status_refund_default }}</label>
+            <div class="col-sm-10">
+              <select name="module_nra_status_refund_default" id="input-status-refund-default" class="form-control">
+                {% for key, refund in refunds %}
+                  {% if key == module_nra_status_refund_default %}
+                    <option value="{{ key }}" selected="selected">{{ refund }}</option>
+                  {% else %}
+                    <option value="{{ key }}">{{ refund }}</option>
+                  {% endif %}
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+
+
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-with-tax">{{ entry_with_tax }}</label>
+            <div class="col-sm-10">
+              <select name="module_nra_with_tax" id="input-with-tax" class="form-control">
+                {% if module_nra_with_tax %}
+                  <option value="1" selected="selected">{{ text_enabled }}</option>
+                  <option value="0">{{ text_disabled }}</option>
+                {% else %}
+                  <option value="1">{{ text_enabled }}</option>
+                  <option value="0" selected="selected">{{ text_disabled }}</option>
+                {% endif %}
+              </select>
+            </div>
+          </div>
+
 
         </form>
       </div>

@@ -23,7 +23,36 @@ $_['entry_with_post_payment'] = 'Наложен платеж с ППП';
 $_['entry_with_post_payment_service'] = 'Доставчик на платежни услуги';
 $_['entry_vpos'] = 'Номер на виртуален ПОС терминал';
 $_['entry_delivery_payment'] = 'Идентификатор на доставчика на плащане';
+$_['entry_status_completed'] = 'Статус на завършени поръчки';
+$_['entry_status_refund'] = 'Статус на върнати поръчки';
+$_['entry_status_refund_default'] = 'Статус на върнати поръчки - подразбиране';
+$_['entry_with_tax'] = 'Цените на продуктите са крайни (с ДДС)';
 $_['entry_status']     = 'Статус';
+$_['entry_month'] = 'Изберете месец';
+
+//Button
+$_['button_export'] = 'Свали XML експорт';
+
+//Text
+$_['text_bank'] = 'По банкова сметка';
+$_['text_card'] = 'По карта';
+$_['text_cash'] = 'В брой';
+$_['text_other'] = 'Друго';
+$_['text_reflected_with_receipt'] = 'Отразен с разписка';
+
+//Months
+$_['text_january'] = 'Януари';
+$_['text_february'] = 'Февруари';
+$_['text_march'] = 'Март';
+$_['text_april'] = 'Април';
+$_['text_may'] = 'Май';
+$_['text_june'] = 'Юни';
+$_['text_july'] = 'Юли';
+$_['text_august'] = 'Август';
+$_['text_september'] = 'Септември';
+$_['text_october'] = 'Октомври';
+$_['text_november'] = 'Ноември';
+$_['text_december'] = 'Декември';
 
 // Error
 $_['error_permission'] = 'Внимание: Вие нямате права да променяте настройките!';
