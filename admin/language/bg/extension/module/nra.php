@@ -29,6 +29,8 @@ $_['entry_status_refund_default'] = 'Статус на върнати поръч
 $_['entry_with_tax'] = 'Цените на продуктите са крайни (с ДДС)';
 $_['entry_status']     = 'Статус';
 $_['entry_month'] = 'Изберете месец';
+$_['entry_date_start'] = 'Начална дата';
+$_['entry_date_end'] = 'Крайна дата';
 
 //Button
 $_['button_export'] = 'Свали XML експорт';
@@ -39,20 +41,6 @@ $_['text_card'] = 'По карта';
 $_['text_cash'] = 'В брой';
 $_['text_other'] = 'Друго';
 $_['text_reflected_with_receipt'] = 'Отразен с разписка';
-
-//Months
-$_['text_january'] = 'Януари';
-$_['text_february'] = 'Февруари';
-$_['text_march'] = 'Март';
-$_['text_april'] = 'Април';
-$_['text_may'] = 'Май';
-$_['text_june'] = 'Юни';
-$_['text_july'] = 'Юли';
-$_['text_august'] = 'Август';
-$_['text_september'] = 'Септември';
-$_['text_october'] = 'Октомври';
-$_['text_november'] = 'Ноември';
-$_['text_december'] = 'Декември';
 
 // Error
 $_['error_permission'] = 'Внимание: Вие нямате права да променяте настройките!';

@@ -149,6 +149,10 @@ class ControllerExtensionModuleNra extends Controller
     public function export()
     {
 
+        if (empty($this->config->get('module_nra_eik')) && empty($this->config->get('module_nra_shop_id'))) {
+            $this->response->redirect($this->url->link('extension/module/nra', 'user_token=' . $this->session->data['user_token'], true));
+        }
+
         $this->load->language('extension/module/nra');
 
         $this->document->setTitle($this->language->get('heading_title'));
@@ -182,9 +186,6 @@ class ControllerExtensionModuleNra extends Controller
 
         $data['cancel'] = $this->url->link('extension/module/nra', 'user_token=' . $this->session->data['user_token'] . '&type=module', true);
 
-        //Refunds
-        $data['months'] = $this->getMonths();
-
         $data['header'] = $this->load->controller('common/header');
         $data['column_left'] = $this->load->controller('common/column_left');
         $data['footer'] = $this->load->controller('common/footer');
@@ -209,6 +210,107 @@ class ControllerExtensionModuleNra extends Controller
         return !$this->error;
     }
 
+    public function download()
+    {
+
+        if (!empty($this->request->post['filter_date_start']) && !empty($this->request->post['filter_date_end'])) {
+
+            $orders = array();
+            $refunded = array();
+
+            if (isset($this->request->post['filter_date_start'])) {
+                $filter_date_start = $this->request->post['filter_date_start'];
+            } else {
+                $filter_date_start = '';
+            }
+
+            if (isset($this->request->post['filter_date_end'])) {
+                $filter_date_end = $this->request->post['filter_date_end'];
+            } else {
+                $filter_date_end = '';
+            }
+
+            $this->load->model('extension/module/nra');
+            $filter_data = array(
+                'filter_date_start' => $filter_date_start,
+                'filter_date_end' => $filter_date_end,
+            );
+
+            $allOrders = $this->model_extension_module_nra->getOrders($filter_data);
+
+            if (!empty($allOrders)) {
+                $order_products = array();
+                foreach ($allOrders as $or) {
+                    $order = $this->model_extension_module_nra->getOrder($or['order_id']);
+                    $products = $this->model_extension_module_nra->getOrderProducts($order['order_id']);
+                    foreach ($products as $product) {
+                        $order_products[] = array(
+                            'name' => $product['name'],
+                            'quantity' => $product['quantity'],
+                            'price' => $product['price'],
+//                            'total'      => $product['total'],
+                            'vatRate' => $product['tax']
+                        );
+                    }
+
+                    if ($order['order_status_id'] === $this->config->get('module_nra_status_completed')) {
+                        $orders[] = [
+                            'documentNumber' => sprintf('%s%s', $order['invoice_prefix'], $order['invoice_no']),
+                            'documentDate' => $order['date_added'],
+                            'orderDate' => $order['date_added'],
+                            'items' => $order_products,
+                            'orderUniqueNumber' => $order['order_id'],
+                            'paymentProcessorIdentifier' => $this->config->get('module_nra_delivery_payment'),
+                            'paymentType' => $this->getPaymentType($order['payment_code'], $this->config->get('module_nra_payment_method')),
+                            'totalDiscount' => 0,
+                            'transactionNumber' => null,
+                            'virtualPosNumber' => $this->config->get('module_nra_vpos'),
+                        ];
+                    } elseif ($order['order_status_id'] === $this->config->get('module_nra_status_refund')) {
+                        $refunded[] = [
+                            'orderAmount' => $order['total'],
+                            'orderDate' => $order['date_added'],
+                            'orderNumber' => $order['order_id'],
+                            'returnMethod' => $this->config->get('module_nra_status_refund_default'),
+                        ];
+                    }
+
+                }
+
+                if ($this->request->server['HTTPS']) {
+                    $server = HTTPS_CATALOG;
+                } else {
+                    $server = HTTP_CATALOG;
+                }
+
+                $data = [
+                    'domain' => $server,
+                    'eik' => $this->config->get('module_nra_eik'),
+                    'isMarketplace' => $this->config->get('module_nra_is_marketplace'),
+                    'month' => date('n', strtotime($filter_date_start)),
+                    'orders' => $orders,
+                    'returned' => $refunded,
+                    'shopUniqueNumber' => $this->config->get('module_nra_shop_id'),
+                    'year' => date('Y')
+                ];
+
+                if (is_array($data)) {
+
+                    $xml = new SimpleXMLElement("<?xml version=\"1.0\" encoding=\"windows-1251\"?><audit></audit>");
+                    $this->arraytoXML($data, $xml);
+                    //$xml->asXML(DIR_STORAGE . 'download/nra-audit.xml');
+                    header("Content-type: text/xml");
+                    header('Content-Disposition: attachment; filename="nra-audit.xml"');
+                    echo $xml->asXML();
+                    exit();
+
+                }
+            }
+        }
+
+        $this->response->redirect($this->url->link('extension/module/nra/export', 'user_token=' . $this->session->data['user_token'], true));
+
+    }
 
     private function refundMethods()
     {
@@ -238,31 +340,34 @@ class ControllerExtensionModuleNra extends Controller
         return $methods;
     }
 
-    private function getMonths()
+    private function getPaymentType($paymentCode, array $paymentMethods)
     {
-        $data = array();
+        if (!empty($paymentCode) && !empty($paymentMethods)) {
 
-        $months = [
-            1 => $this->language->get('text_january'),
-            2 => $this->language->get('text_february'),
-            3 => $this->language->get('text_march'),
-            4 => $this->language->get('text_april'),
-            5 => $this->language->get('text_may'),
-            6 => $this->language->get('text_june'),
-            7 => $this->language->get('text_july'),
-            8 => $this->language->get('text_august'),
-            9 => $this->language->get('text_september'),
-            10 => $this->language->get('text_october'),
-            11 => $this->language->get('text_november'),
-            12 => $this->language->get('text_december'),
-        ];
+            foreach ($paymentMethods as $k => $method) {
+                if (in_array($paymentCode, $method, true)) {
+                    return $k;
+                }
+            }
 
-        for ($i = 1; $i <= date('n'); $i++) {
-            $data[$i] = $months[$i];
         }
 
-        return $data;
+        return false;
+    }
 
+    private function arraytoXML($arr, &$xml)
+    {
+        foreach ($arr as $key => $value) {
+            if (is_int($key)) {
+                $key = 'Element' . $key;  //To avoid numeric tags like <0></0>
+            }
+            if (is_array($value)) {
+                $label = $xml->addChild($key);
+                $this->arrayToXml($value, $label);  //Adds nested elements.
+            } else {
+                $xml->addChild($key, $value);
+            }
+        }
     }
 
     public function install()
