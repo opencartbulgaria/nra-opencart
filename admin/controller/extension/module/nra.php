@@ -244,10 +244,14 @@ class ControllerExtensionModuleNra extends Controller
                     $order = $this->model_extension_module_nra->getOrder($or['order_id']);
                     $products = $this->model_extension_module_nra->getOrderProducts($order['order_id']);
                     foreach ($products as $product) {
+                        $price = $product['price'];
+                        if ($this->config->get('module_nra_with_tax')) {
+                            $price = $product['price'] + ($this->config->get('config_tax') ? $product['tax'] : 0);
+                        }
                         $order_products[] = array(
                             'name' => $product['name'],
                             'quantity' => $product['quantity'],
-                            'price' => $product['price'],
+                            'price' => $price,
 //                            'total'      => $product['total'],
                             'vatRate' => $product['tax']
                         );
